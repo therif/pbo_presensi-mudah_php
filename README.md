@@ -15,3 +15,12 @@ UAS MEMBUAT WEBSITE :
 - Ide / Tema .  
 - Fungsi Crud & OOP  
 - Design / Tampilan kesesuaian Dengan Ide/Tema.  
+
+
+### DEMO SHOW
+
+![Image 1](Screenshot_20230116_202014.png?raw=true)
+
+![Image 1](Screenshot_20230116_202048.png?raw=true)
+
+![Image 1](Screenshot_20230116_202117.png?raw=true)
