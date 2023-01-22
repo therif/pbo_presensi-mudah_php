@@ -63,7 +63,6 @@
 
 var noteTemp =  '<div class="note" id="note-new">'
                 +   '<a href="#" onclick="addNoteToDB();return false" class="button save-btn">Save</a>'
-                // +   '<input type="button" class="save-btn" value="Save" onclick="addNoteToDB()">'
 				+	'<a href="javascript:;" class="button remove">x</a>'
 				+ 	'<div class="note_cnt">'
 				+		'<textarea class="title" id="title-new" placeholder="Enter note title"></textarea>'
