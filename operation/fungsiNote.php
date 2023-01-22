@@ -11,6 +11,12 @@ if (isset($_REQUEST['op'])) {
         case 'shownote':
             shownote();
             break;
+        case 'delnote':
+            delnote();
+            break;
+        case 'editnote':
+            editnote();
+            break;
         default:
             // echo 'Gagal';
             break;
@@ -27,18 +33,21 @@ class noteProses {
         mysqli_close($this->db);
     }
 
-    function add_Note($data){
-        if (!empty($data)) {
-            $judul = $data[0];
-            $konten = $data[1];
+    function escape_string($value) {
+		return $this->db->real_escape_string($value);
+	}
+
+    function add_Note($judul, $konten){
+        if (!empty($judul)) {
+            $cleanTitle = $this->escape_string($judul);
+            $cleanKonten = $this->escape_string($konten);
 
             $tgl = date("Y-m-d H:i:s");
-            $sql = "INSERT INTO `notes` (`judul`, `konten`, `tgl`) VALUES ('$judul', '$konten', '$tgl');";
+            $sql = "INSERT INTO `notes` (`judul`, `konten`, `tgl`) VALUES ('$cleanTitle', '$cleanKonten', '$tgl');";
             $query = mysqli_query($this->db, $sql);
-            if($query){
+            if ($query) {
                 // header('Location: ../index.php');
                 // echo 'Sukses';
-
 
                 $reply = array("id"=>mysqli_insert_id($this->db), 
                                 "judul"=>$judul, 
@@ -46,8 +55,8 @@ class noteProses {
                                 "tgl"=>$tgl);
 
                 // echo "<script>console.log('php "+$reply['judul']+"');</script>";
-                //return $reply; //reply
-            }else{
+                return $reply;
+            } else {
                 return 'Gagal Add Note';
             }
         }
@@ -69,17 +78,93 @@ class noteProses {
         return $data;
         $this->closeDB();
     }
+
+    function delete_Note($id){
+        if (!empty($id)) {
+            $sql = "DELETE FROM notes WHERE id = $id;";
+
+            $query = mysqli_query($this->db, $sql);
+            if ($query) {
+                // header('Location: ../index.php');
+                return 'Sukses';
+
+            } else {
+                return 'Gagal Add Note';
+            }
+        }
+        
+        $this->closeDB();
+    }
+
+    function update_Note($id, $judul, $konten) {
+        if (!empty($id)) {
+            
+            if (!empty($judul) || !empty($konten)) {
+                $cleanTitle = $this->escape_string($judul);
+                $cleanKonten = $this->escape_string($konten);
+                $sql = "UPDATE notes SET judul = '$cleanTitle', konten = '$cleanKonten' WHERE id = $id;";
+                $query = mysqli_query($this->db, $sql);
+                if ($query) {
+                    // header('Location: ../index.php');
+                    return 'Sukses';
+                } else {
+                    return 'Gagal Update Note!';
+                }
+            }
+            
+            return 'Gagal Update Note!';
+        }
+        
+        $this->closeDB();
+    }
 }
 
 function addnote() {
-    $parsing = ($_POST);
-    $data = [];
-    foreach($parsing as $key => $value){
-        $data[] = $value;
+    $title = ($_POST['title']);
+    $konten = ($_POST['content']);
+
+    if (!empty($title)) {
+        $addDb = new noteProses();
+        $prosins = $addDb->add_Note($title, $konten);
+        echo json_encode($prosins);      
+    } else {
+
     }
-    $addDb = new noteProses();
-    $prosins = $addDb->add_Note($data);
-    echo json_encode($prosins);
+    
+}
+
+function delnote() {
+    // echo "<script>console.log('Delete Note');</script>";
+    $idnya = ($_POST['id']);
+
+    //echo 'IDNYA => '.($idnya);
+
+    if (!empty($idnya)) {
+        $delDb = new noteProses();
+        $prosdel = $delDb->delete_Note($idnya);
+        echo json_encode($prosdel);        
+    } else {
+
+    }
+
+}
+
+function editnote() {
+    // echo "<script>console.log('Edit Note');</script>";
+    $idnya = ($_POST['id']);
+    $title = ($_POST['title']);
+    $konten = ($_POST['content']);
+
+    echo 'title => '.($title);
+
+    if (!empty($idnya)) {
+        $editDb = new noteProses();
+        $prosupdate = $editDb->update_Note($idnya,$title,$konten);
+        echo json_encode($prosupdate);        
+    } else {
+
+    }
+
 }
 
 function shownote() {

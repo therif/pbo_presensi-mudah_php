@@ -83,6 +83,7 @@ if(isset($_POST['submit'])){
                   <div class="c-aside__event__time">'.$row['tgl'].'</div>
                   <div class="c-aside__event__desc">'.$row['desk'].'</div>
                   <div class="c-aside__event__tags">'.$row['info'].'</div>
+                  <div class="c-aside__event__tags">Edit Del</div>
                 </div>';
               }
         ?>

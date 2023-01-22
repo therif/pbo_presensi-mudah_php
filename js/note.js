@@ -61,22 +61,55 @@
 })(jQuery);
 
 
-var noteTemp =  '<div class="note">'
-                +   '<a href="#" onclick="addNoteToDB()" class="button save-btn">Save</a>'
+var noteTemp =  '<div class="note" id="note-new">'
+                +   '<a href="#" onclick="addNoteToDB();return false" class="button save-btn">Save</a>'
                 // +   '<input type="button" class="save-btn" value="Save" onclick="addNoteToDB()">'
 				+	'<a href="javascript:;" class="button remove">x</a>'
 				+ 	'<div class="note_cnt">'
-				+		'<textarea class="title" placeholder="Enter note title"></textarea>'
-				+ 		'<textarea class="cnt" placeholder="Enter note description here"></textarea>'
+				+		'<textarea class="title" id="title-new" placeholder="Enter note title"></textarea>'
+				+ 		'<textarea class="cnt" id="cnt-new" placeholder="Enter note description here"></textarea>'
                 
 				+	'</div> '
 				+'</div>';
 
 var noteZindex = 1;
 
-function delNoteID($idnya){
-    console.log('hapus : '+$idnya);
-    $(this).parent('.note').hide("puff",{ percent: 133}, 250);
+function delNoteID(idnya){
+    // console.log('hapus : '+idnya);
+    var dataString = 'id='+ idnya;
+    $.ajax({
+        type: "POST",
+        url: "operation/fungsiNote.php?op=delnote",
+        data: dataString,
+        cache: false,
+        success: function(html){
+            // console.log('Reply del note: '+html);
+            if (html == 'Sukses') {
+                $(this).parent('.note').hide("puff",{ percent: 133}, 250);
+            }
+        }
+    });
+};
+
+function editNote(idnya){
+    // var parentnya = $("#note-"+idnya);
+    var title = $("#note-"+idnya).find('.title').val();
+    var content = $("#note-"+idnya).find('.cnt').val();
+    var dataString = 'id='+ idnya + '&title='+ title + '&content=' + content;
+    console.log('dataString '+dataString);
+    $.ajax({
+        type: "POST",
+        url: "operation/fungsiNote.php?op=editnote",
+        data: dataString,
+        cache: false,
+        success: function(html){
+            console.log('Reply edit note: '+html);
+            if (!html == 'Sukses') {
+                // kalau error, reload
+                document.location.reload(true);
+            }
+        }
+    });
 };
 
 function deleteNote(){    
@@ -84,49 +117,51 @@ function deleteNote(){
 };
 
 function newNoteIsi(idreply, tgl, judul, konten) {
-    // var note =  '<div class="note">'
-    //             +   '<span class="fa fa-bars"></span>  &nbsp;<span>'+tgl+'</span>'
-    //             +	'<a href="javascript:delNoteID('+idreply+');" class="button remove">x</a>'
-    //             + 	'<div class="note_cnt">'
-    //             +		'<textarea class="title" placeholder="Enter note title">'+judul+'</textarea>'
-    //             + 		'<textarea class="cnt" placeholder="Enter note description here">'+konten+'</textarea>'
-    //             +	'</div> '
-    //             +'</div>';
+    var note =  '<div id="note-'+idreply+'" class="note">'
+                +   '<span class="fa fa-bars"></span>  &nbsp;<span>'+tgl+'</span>'
+                +	'<a href="javascript:delNoteID('+idreply+');" class="button remove">x</a>'
+                + 	'<div class="note_cnt">'
+                +		'<textarea class="title" placeholder="Enter note title" onchange="javascript:editNote('+idreply+')">'+judul+'</textarea>'
+                + 		'<textarea class="cnt" placeholder="Enter note description here" onchange="javascript:editNote('+idreply+')">'+konten+'</textarea>'
+                +	'</div> '
+                +'</div>';
 
-    //             $(note).hide().appendTo("#board").show("fade", 300).draggable().on('dragstart',
-    //             function(){
-    //                 $(this).zIndex(++noteZindex);
-    //             }
-    //             );
-    //             $('.remove').click(deleteNote);
-    //             $('textarea').autogrow();
+                $(note).hide().appendTo("#board").show("fade", 300).draggable().on('dragstart',
+                function(){
+                    $(this).zIndex(++noteZindex);
+                }
+                );
+                $('.remove').click(deleteNote);
+                $('textarea').autogrow();
 
-    //             $('.note')
-	//                 return false; 
-
-    
-      
+                $('.note')
+	                 return false; 
 };
 
 function addNoteToDB(){
+    console.log('addNoteToDB ');
     var title = $('.title').val();
     var content = $('.cnt').val();
-    // var tgl = $('#dateya').val();
     var dataString = 'title='+ title + '&content=' + content;
+
     $.ajax({
         type: "POST",
         url: "operation/fungsiNote.php?op=addnote",
         data: dataString,
         cache: false,
         success: function(html){
-            //reload ??
-            document.location.reload(true);
+            var dataReply = JSON.parse(html);
+            var idnya = dataReply['id'];
+            if (idnya) {
+                newNoteIsi(idnya, dataReply['tgl'], dataReply['judul'], dataReply['konten']);
+                // $(this).parent('.note').hide("puff",{ percent: 133}, 250);
 
-            // var reply = $.parseJSON(html);
-            // console.log('sukses add data: '+JSON.stringify(html));
-            // console.log('judul: '+reply['judul']);
-            
-            //newNoteIsi(reply['id'], reply['tgl'], reply['judul'], reply['konten']);
+                $("#note-new").find('.title').val('')
+                $("#note-new").find('.cnt').val('');
+
+            } else {
+                document.location.reload(true);
+            }
         }
     });
 
@@ -142,13 +177,12 @@ function showNote(){
             var json = $.parseJSON(html);
             // loop the json to new card 
             $.each(json, function(i, item) {
-                var note =  '<div class="note">'
+                var note =  '<div id="note-'+item.id+'" class="note">'
                 +   '<span class="fa fa-bars"></span>  &nbsp;<span>'+item.tgl+'</span>'
                 +	'<a href="javascript:delNoteID('+item.id+');" class="button remove">x</a>'
                 + 	'<div class="note_cnt">'
-                +		'<textarea class="title" placeholder="Enter note title">'+item.judul+'</textarea>'
-                // +       '<span>'+item.tgl+'</span>'
-                + 		'<textarea class="cnt" placeholder="Enter note description here">'+item.konten+'</textarea>'
+                +		'<textarea class="title" placeholder="Enter note title" onchange="javascript:editNote('+item.id+')">'+item.judul+'</textarea>'
+                + 		'<textarea class="cnt" placeholder="Enter note description here" onchange="javascript:editNote('+item.id+')">'+item.konten+'</textarea>'
                 +	'</div> '
                 +'</div>';
                 $(note).hide().appendTo("#board").show("fade", 300).draggable().on('dragstart',

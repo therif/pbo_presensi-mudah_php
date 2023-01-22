@@ -23,15 +23,15 @@ class presensi {
     //     $this->db = $db;
     // }
 
-    function __construct(){
+    function __construct() {
         $this->db = connect_database();
     }
 
-    function closeDB(){
+    function closeDB() {
         mysqli_close($this->db);
     }
 
-    function getAll_data($tgl = ''){
+    function getAll_data($tgl = '') {
         if (!empty($tgl)) {
             $sql = "SELECT * FROM presensi WHERE tgl = $tgl ORDER BY tgl DESC;";
         } else {
@@ -47,10 +47,10 @@ class presensi {
         $this->closeDB();
     }
 
-    function insert_data($data){
-        $name = $data[0];
+    function insert_data($data) {
+        $name = $this->escape_string($data[0]);
         $date = $data[1];
-        $desk = $data[2];
+        $desk = $this->escape_string($data[2]);
         $info = $data[3];
         $sql = "INSERT INTO `presensi` (`nama`, `tgl`, `desk`, `info`) VALUES ('$name', '$date', '$desk', '$info');";
         $query = mysqli_query($this->db, $sql);
@@ -61,6 +61,51 @@ class presensi {
         }
         $this->closeDB();
     }
+    function delete_data($id) {
+        if (!empty($id)) {
+            $sql = "DELETE FROM presensi WHERE id = $id;";
+
+            $query = mysqli_query($this->db, $sql);
+            if ($query) {
+                // header('Location: ../index.php');
+                return 'Sukses';
+
+            } else {
+                return 'Gagal Add Data';
+            }
+            
+        }
+        
+        $this->closeDB();
+    }
+
+    function update_data($id, $desk, $info) {
+        if (!empty($id)) {
+            if (!empty($desk) || !empty($info)) {
+                $cleanDesk = $this->escape_string($desk);
+                $cleanInfo = $this->escape_string($info);
+                
+                $sql = "UPDATE presensi SET desk = $cleanDesk, info = $cleanInfo WHERE id = $id;";
+
+                $query = mysqli_query($this->db, $sql);
+                if ($query) {
+                    // header('Location: ../index.php');
+                    return 'Sukses';
+
+                } else {
+                    return 'Gagal Update Data!';
+                }
+            }
+            
+            return 'Gagal Update Data!';
+        }
+        
+        $this->closeDB();
+    }
+
+    function escape_string($value) {
+		return $this->db->real_escape_string($value);
+	}
 }
 
 // function closeDB($koneksi){
