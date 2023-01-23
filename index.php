@@ -161,7 +161,7 @@ if(isset($_POST['submit'])){
 <div class="footer">
   <div class="left">
     <a href="./About.html" target="_blank"><i class="fa fa-hand-o-right" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <b>About</b></a> <br />
-    <a href="https://github.com/therif/pbo_presensi-mudah" target="_blank"><i class="fa fa-hand-o-right" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <b>Source Code</b></a>
+    <a href="https://github.com/therif/pbo_presensi-mudah_php" target="_blank"><i class="fa fa-hand-o-right" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp; <b>Source Code</b></a>
   </div>
 
   <div class="right">
