@@ -44,10 +44,8 @@ function defaultEvents(dataDay,dataName,dataNotes,classTag){
   date.addClass("event");
   date.addClass("event--" + classTag.toLowerCase());
 }
-function presensiEvents(dataDay,dataName,dataNotes,classTag){
+function presensiEvents(dataDay,classTag){
   var date = $('*[data-day='+dataDay+']');
-  date.attr("data-name", dataName);
-  date.attr("data-notes", classTag +'<br>'+dataNotes);
   date.addClass("event");
   date.addClass("event--" + classTag.toLowerCase());
 }
@@ -64,7 +62,7 @@ showAllPresensi();
 
 //button of the current day
 todayBtn.on("click", function() {
-  console.log('todayBtn ('+today+') : '+month+' < '+indexMonth);
+  // console.log('todayBtn ('+today+') : '+month+' < '+indexMonth);
   if (month < indexMonth) {
     // var step = indexMonth % month;
     var step = indexMonth - month;
@@ -83,7 +81,7 @@ dataCel.each(function() {
   if ($(this).data("day") === today) {
     $(this).addClass("isToday");
     
-    //fillEventSidebar($(this));
+    fillEventSidebar($(this));
   }
 });
 
@@ -127,7 +125,7 @@ saveBtn.on("click", function() {
         $(this).addClass("event--" + inputTag);
       }
       
-      //fillEventSidebar($(this));
+      fillEventSidebar($(this));
     }
   });
 
@@ -136,37 +134,7 @@ saveBtn.on("click", function() {
   $("#addEvent")[0].reset();
 });
 
-function showTglIni(self) {
-  // defaultEvents(today, 'YEAH!','Today is your day','important');
-  // defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
-  var tglny = self.attr("data-day");
-  var dataString = 'tgl='+ tglny;
-  console.log(dataString);
-
-  $.ajax({
-    type: "POST",
-    url: "operation/fungsiPresensi.php?op=showpresensi",
-    data: dataString,
-    cache: false,
-    success: function(html) {
-        console.log(html);
-        // parsing the html to json
-        var json = $.parseJSON(html);
-        // loop the json to new card 
-        $.each(json, function(i, item) {
-          presensiEvents(item.tgl, item.nama,item.desk,item.info);
-            
-        });
-
-    }
-  });
-}
-
 function showAllPresensi() {
-
-  defaultEvents(today, 'YEAH!','Today is your day','important');
-  defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
-  defaultEvents("2023-01-24", 'Tomorrow!','22 May tomorrow be more beautiful!!!!','important');
 
   $.ajax({
     type: "GET",
@@ -178,21 +146,75 @@ function showAllPresensi() {
         var json = $.parseJSON(html);
         // loop the json to new card 
         $.each(json, function(i, item) {
-          presensiEvents(item.tgl, item.nama,item.desk,item.info);
+          presensiEvents(item.tgl, item.tag);
             
         });
 
     }
   });
+
+  defaultEvents(today, 'YEAH!','Today is your day','important');
+  defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
 }
 
 //fill sidebar event info
 function fillEventSidebar(self) {
+
   $(".c-aside__event").remove();
+  var thisName = self.attr("data-name");
+  var thisNotes = self.attr("data-notes");
+  var thisImportant = self.hasClass("event--important");
+  var thisBirthday = self.hasClass("event--birthday");
+  var thisFestivity = self.hasClass("event--festivity");
+  var thisPresensi = self.hasClass("event--presensi");
+  var thisEvent = self.hasClass("event");
+  
+  if (thisName) {
+    switch (true) {
+      case thisPresensi:
+        break;
+      case thisImportant:
+        $(".c-aside__eventList").append(
+          "<p class='c-aside__event c-aside__event--important'>" +
+          thisName +
+          " <span> • " +
+          thisNotes +
+          "</span></p>"
+        );
+        break;
+      case thisBirthday:
+        $(".c-aside__eventList").append(
+          "<p class='c-aside__event c-aside__event--birthday'>" +
+          thisName +
+          " <span> • " +
+          thisNotes +
+          "</span></p>"
+        );
+        break;
+      case thisFestivity:
+        $(".c-aside__eventList").append(
+          "<p class='c-aside__event c-aside__event--festivity'>" +
+          thisName +
+          " <span> • " +
+          thisNotes +
+          "</span></p>"
+        );
+        break;
+      case thisEvent:
+        $(".c-aside__eventList").append(
+          "<p class='c-aside__event'>" +
+          thisName +
+          " <span> • " +
+          thisNotes +
+          "</span></p>"
+        );
+        break;
+    }
+  }
 
   var tglny = self.attr("data-day");
   var dataString = 'tgl='+ tglny;
-  console.log(dataString);
+  // console.log(dataString);
 
   $.ajax({
     type: "POST",
@@ -200,102 +222,34 @@ function fillEventSidebar(self) {
     data: dataString,
     cache: false,
     success: function(html) {
-        console.log(html);
+        // console.log(html);
         // parsing the html to json
         var json = $.parseJSON(html);
         // loop the json to new card 
         $.each(json, function(i, item) {
 
-          $(".c-aside__eventList").append(
-            "<p class='c-aside__event'>" +
-            item.nama + " <span> • " + item.info + "</span><br>" +
-            "<i>"+item.desk +"</i>"+
-            "</p>"
-          );
+          if (item.tag.toLowerCase() == 'presensi') {
+            $(".c-aside__eventList").append(
+              "<p class='c-aside__event c-aside__event--presensi'>" +
+              item.nama + " <span> • " + item.info + "</span><br>" +
+              "<i>"+item.desk +"</i>"+
+              "</p>"
+            );
+          } else {
+            $(".c-aside__eventList").append(
+              "<p class='c-aside__event'>" +
+              item.nama + " <span> • " + item.info + "</span><br>" +
+              "<i>"+item.desk +"</i>"+
+              "</p>"
+            );
+
+          }
             
         });
 
     }
   });
 
-
-  // $(".c-aside__event").remove();
-  var thisName = self.attr("data-name");
-  var thisNotes = self.attr("data-notes");
-  var thisImportant = self.hasClass("event--important");
-  var thisHadir = self.hasClass("event--hadir");
-  var thisSakit = self.hasClass("event--sakit");
-  var thisIzin = self.hasClass("event--izin");
-  var thisBirthday = self.hasClass("event--birthday");
-  var thisFestivity = self.hasClass("event--festivity");
-  var thisEvent = self.hasClass("event");
-  
-  switch (true) {
-    case thisImportant:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--important'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-    case thisHadir:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--hadir'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-    case thisSakit:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--sakit'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-    case thisIzin:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--izin'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-
-    case thisBirthday:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--birthday'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-    case thisFestivity:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event c-aside__event--festivity'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-    case thisEvent:
-      $(".c-aside__eventList").append(
-        "<p class='c-aside__event'>" +
-        thisName +
-        " <span> • " +
-        thisNotes +
-        "</span></p>"
-      );
-      break;
-   }
 };
 
 dataCel.on("click", function() {
@@ -307,7 +261,7 @@ dataCel.on("click", function() {
   .attr("data-day")
   .slice(5, 7);
 
-  console.log($(this).val());
+  // console.log($(this).val());
   
   fillEventSidebar($(this));
 

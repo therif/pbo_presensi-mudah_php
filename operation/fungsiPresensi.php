@@ -1,7 +1,10 @@
 <?php
 
-// include 'db/koneksi.php';
-include '../db/koneksi.php';
+if (file_exists('../db/koneksi.php')) {
+    include '../db/koneksi.php';
+  } else {
+    include 'db/koneksi.php';
+  }
 
 if (isset($_REQUEST['op'])) {
     $act = $_REQUEST['op'];
@@ -13,15 +16,8 @@ if (isset($_REQUEST['op'])) {
         case 'showpresensi':
             showpresensi();
             break;
-        // case 'delnote':
-        //     delnote();
-        //     break;
-        // case 'editnote':
-        //     editnote();
-        //     break;
         default:
             // echo 'Gagal';
-            // showpresensi();
             break;
     }
 }
@@ -30,6 +26,7 @@ if (isset($_REQUEST['op'])) {
 //     private $name;
 //     private $date;
 //     private $notes;
+//     private $info;
 //     private $tags;
 
 //     function __construct($data){
@@ -55,6 +52,10 @@ class presensi {
         mysqli_close($this->db);
     }
 
+    function escape_string($value) {
+		return $this->db->real_escape_string($value);
+	}
+
     function getAll_data($tgl = '') {
         if (!empty($tgl)) {
             $sql = "SELECT * FROM presensi WHERE tgl = '$tgl' ORDER BY tgl DESC;";
@@ -76,7 +77,7 @@ class presensi {
         $date = $data[1];
         $desk = $this->escape_string($data[2]);
         $info = $data[3];
-        $sql = "INSERT INTO `presensi` (`nama`, `tgl`, `desk`, `info`) VALUES ('$name', '$date', '$desk', '$info');";
+        $sql = "INSERT INTO `presensi` (`nama`, `tgl`, `desk`, `info`, `tag`) VALUES ('$name', '$date', '$desk', '$info', 'Presensi');";
         $query = mysqli_query($this->db, $sql);
         if($query){
             header('Location: index.php');
@@ -127,9 +128,6 @@ class presensi {
         $this->closeDB();
     }
 
-    function escape_string($value) {
-		return $this->db->real_escape_string($value);
-	}
 }
 
 
@@ -148,41 +146,5 @@ function showPresensi() {
     
     echo json_encode($data);
 }
-
-// function closeDB($koneksi){
-//     mysqli_close($koneksi);
-// }
-
-// function insert_database($koneksi, $data){
-//     $name = $data[0];
-//     $date = $data[1];
-//     $notes = $data[2];
-//     $tags = $data[3];
-//     $sql = "INSERT INTO `pbo` (`event_name`, `event_tgl`, `event_notes`, `event_option`) VALUES ('$name', '$date', '$notes', '$tags');";
-//     $query = mysqli_query($koneksi, $sql);
-//     if($query){
-//         header('Location: index.php');
-//     }else{
-//         echo 'Gagal';
-//     }
-//     closeDB($koneksi);
-// }
-
-// function get_all_data($koneksi, $tgl = ''){
-//     if (!empty($tgl)) {
-//         $sql = "SELECT * FROM pbo WHERE event_tgl = $tgl;";
-//     } else {
-//         $sql = "SELECT * FROM pbo;";
-//     }
-    
-//     $query = mysqli_query($koneksi, $sql);
-//     $data = [];
-//     while($row = mysqli_fetch_array($query)){
-//         $data[] = $row;
-//     }
-//     return $data;
-//     closeDB($koneksi);
-// }
-
 
 ?>

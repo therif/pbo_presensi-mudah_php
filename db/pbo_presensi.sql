@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 15, 2023 at 09:48 AM
+-- Generation Time: Jan 23, 2023 at 02:32 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.4
 
@@ -39,8 +39,10 @@ CREATE TABLE `notes` (
 --
 
 INSERT INTO `notes` (`id`, `judul`, `konten`, `tgl`) VALUES
-(1, 'INAN', 'Hari ini saya galau banget gaes!', '2023-01-15 16:36:41'),
-(2, 'Fatchay', 'Tugas PBO jangan lupa', '2023-01-15 16:42:21');
+(1, 'Hola!', 'Silahkan isi status ataupun mood kamua disini! Automatis Tanpa Refresh/Reload', '2023-01-15 16:36:41'),
+(2, 'Admin', 'Expresikan Kehadiranmu dengan mengisi disini!', '2023-01-15 16:42:21'),
+(3, 'Fatchay', 'Tugas PBO - PHP Gaes, Semangat!', '2023-01-22 14:50:30'),
+(4, 'Inan', 'Hari ini saya galau banget gaes!', '2023-01-23 07:08:13');
 
 -- --------------------------------------------------------
 
@@ -53,8 +55,19 @@ CREATE TABLE `presensi` (
   `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `tgl` date DEFAULT NULL,
   `desk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `info` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+  `info` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `tag` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `presensi`
+--
+
+INSERT INTO `presensi` (`id`, `nama`, `tgl`, `desk`, `info`, `tag`) VALUES
+(1, 'Arif', '2023-01-15', 'Kuliah Terus...', 'Hadir', 'Presensi'),
+(2, 'Inan', '2023-01-21', 'Bocor pak, banyak tugas', 'Hadir', 'Presensi'),
+(3, 'Ketua', '2023-01-20', 'Atas Nama Endro Ijin Sakit', 'Sakit', 'Presensi'),
+(4, 'Sari', '2023-01-23', 'Roti...roti..', 'Hadir', 'Presensi');
 
 --
 -- Indexes for dumped tables
@@ -80,13 +93,13 @@ ALTER TABLE `presensi`
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `presensi`
 --
 ALTER TABLE `presensi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

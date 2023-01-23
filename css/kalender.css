@@ -492,16 +492,9 @@ header > .wrapper a {
   -webkit-transform: translate(-50%, calc(50% + 20px/2));
 }
 
-.event--hadir:before {
+.event--presensi:before {
   background-color: #19c03d;
 }
-.event--sakit:before {
-  background-color: #fa2e2e;
-}
-.event--izin:before {
-  background-color: #fa2e2e;
-}
-
 .event--birthday:before {
   background-color: #FACC2E;
 }
@@ -540,14 +533,8 @@ header > .wrapper a {
   -webkit-border-radius: 50%;
 }
 
-.c-aside__event--hadir:before {
+.c-aside__event--presensi:before {
   background-color: #19c03d;
-}
-.c-aside__event--sakit:before {
-  background-color: #fa2e2e;
-}
-.c-aside__event--izin:before {
-  background-color: #fa2e2e;
 }
 .c-aside__event--birthday:before {
   background-color: #FACC2E;

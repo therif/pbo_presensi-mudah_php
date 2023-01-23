@@ -19,8 +19,8 @@ UAS MEMBUAT WEBSITE :
 
 ### DEMO SHOW
 
-![Image 1](Screenshot_20230116_202014.png?raw=true)
+![Image 1](ss1.png?raw=true)
 
-![Image 1](Screenshot_20230116_202048.png?raw=true)
+![Image 1](ss2.png?raw=true)
 
-![Image 1](Screenshot_20230116_202117.png?raw=true)
+![Image 1](ss3.png?raw=true)

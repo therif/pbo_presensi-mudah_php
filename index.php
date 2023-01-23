@@ -1,5 +1,7 @@
 <?php 
-// include 'operation/fungsiPresensi.php';
+if (file_exists('operation/fungsiPresensi.php')) {
+  include 'operation/fungsiPresensi.php';
+}
 
 $yearNow = date("Y");
 $monthLongNow = date("F");
@@ -14,7 +16,7 @@ if(isset($_POST['submit'])){
         $_POST['name'],
         $_POST['date'],
         $_POST['notes'],
-        $_POST['tags']
+        $_POST['info']
     ];
     $insdb = new presensi();
     $prosins = $insdb->insert_data($data);
@@ -77,30 +79,6 @@ if(isset($_POST['submit'])){
         <span class="c-aside__num"></span> <span class="c-aside__month"></span>
       </div>
       <div class="c-aside__eventList">
-
-
-            <!-- <?php 
-            
-              // echo "<script>console.log('Ambil Data PR');</script>";
-              // $pr = new presensi();
-              // $data = $pr->getAll_data();
-              
-              // foreach($data as $row){
-              //     echo '<div class="c-aside__event">
-              //     <div class="c-aside__event__title">'.$row['nama'].'</div>
-              //     <div class="c-aside__event__time">'.$row['tgl'].'</div>
-              //     <div class="c-aside__event__desc">'.$row['desk'].'</div>
-              //     <div class="c-aside__event__tags">'.$row['info'].'</div>
-              //     <div class="c-aside__event__tags">Edit Del</div>
-              //   </div>';
-                
-              //   //kedua
-              //   echo '<p class="c-aside__event c-aside__event--'.$row['info'].'">'.$row['nama'].'<span> • '.$row['desk'].'</span></p>';
-                
-              // }
-            ?> -->
-
-
       </div>
     </div>
     <div class="c-cal__container c-calendar__style">
@@ -150,7 +128,7 @@ if(isset($_POST['submit'])){
       <input placeholder="Nama" type="text" name="name" id="name">
       <input type="date" name="date" id="date" value="<?php echo date('Y-m-d'); ?>" >
       <textarea placeholder="Notes" name="notes" cols="30" rows="10" id="notes"></textarea>
-      <select name="tags" id="tags">
+      <select name="info" id="info">
           <option value="Hadir">Hadir</option>
           <option value="Sakit">Sakit</option>
           <option value="Izin">Izin</option>
