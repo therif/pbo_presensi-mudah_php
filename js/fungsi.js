@@ -33,7 +33,7 @@ function fill_table(month, month_length, indexMonth) {
     // fill the first week of days
     for (var i = start_day; i < 8; i++) {
       document.write(
-        "<div data-day='2022-" +
+        "<div data-day='2023-" +
           indexMonth +
           "-0" +
           day +
@@ -51,7 +51,7 @@ function fill_table(month, month_length, indexMonth) {
       for (var i = 1; i <= 7 && day <= month_length; i++) {
         if (day >= 1 && day <= 9) {
           document.write(
-            "<div data-day='2022-" +
+            "<div data-day='2023-" +
               indexMonth +
               "-0" +
               day +
@@ -62,7 +62,7 @@ function fill_table(month, month_length, indexMonth) {
           day++;
         } else {
           document.write(
-            "<div data-day='2022-" +
+            "<div data-day='2023-" +
               indexMonth +
               "-" +
               day +

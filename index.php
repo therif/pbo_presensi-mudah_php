@@ -1,5 +1,13 @@
 <?php 
-include 'operation/fungsiPresensi.php';
+// include 'operation/fungsiPresensi.php';
+
+$yearNow = date("Y");
+$monthLongNow = date("F");
+$monthNow = date("m");
+$monthSatuNow = date("n");
+$dayNow = date("d");
+$daySatuNow = date("j");
+
 
 if(isset($_POST['submit'])){
     $data = [
@@ -22,7 +30,7 @@ if(isset($_POST['submit'])){
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css'>
   <link rel="stylesheet" href="./css/kalender.css">
-  <script  src="./js/fungsi.js"></script>
+  <script src="./js/fungsi.js"></script>
 
   
 </head>
@@ -54,7 +62,7 @@ if(isset($_POST['submit'])){
         </div>
         <span id="next" class="next fa fa-angle-right" aria-hidden="true"></span>
       </div>
-      <span class="c-paginator__year">2022</span>
+      <span class="c-paginator__year"><?php echo $yearNow; ?></span>
     </div>
     <div class="c-sort">
       <a class="o-btn c-today__btn" href="javascript:;">TODAY</a>
@@ -69,47 +77,67 @@ if(isset($_POST['submit'])){
         <span class="c-aside__num"></span> <span class="c-aside__month"></span>
       </div>
       <div class="c-aside__eventList">
-        <?php 
-              // call koneksi.php connection
-              // $koneksi = connect_database();
-              // $pr = new presensi($koneksi);
 
-              $pr = new presensi();
-              $data = $pr->getAll_data();
-              // $data = get_all_data($koneksi);
-              foreach($data as $row){
-                  echo '<div class="c-aside__event">
-                  <div class="c-aside__event__title">'.$row['nama'].'</div>
-                  <div class="c-aside__event__time">'.$row['tgl'].'</div>
-                  <div class="c-aside__event__desc">'.$row['desk'].'</div>
-                  <div class="c-aside__event__tags">'.$row['info'].'</div>
-                  <div class="c-aside__event__tags">Edit Del</div>
-                </div>';
-              }
-        ?>
+
+            <!-- <?php 
+            
+              // echo "<script>console.log('Ambil Data PR');</script>";
+              // $pr = new presensi();
+              // $data = $pr->getAll_data();
+              
+              // foreach($data as $row){
+              //     echo '<div class="c-aside__event">
+              //     <div class="c-aside__event__title">'.$row['nama'].'</div>
+              //     <div class="c-aside__event__time">'.$row['tgl'].'</div>
+              //     <div class="c-aside__event__desc">'.$row['desk'].'</div>
+              //     <div class="c-aside__event__tags">'.$row['info'].'</div>
+              //     <div class="c-aside__event__tags">Edit Del</div>
+              //   </div>';
+                
+              //   //kedua
+              //   echo '<p class="c-aside__event c-aside__event--'.$row['info'].'">'.$row['nama'].'<span> • '.$row['desk'].'</span></p>';
+                
+              // }
+            ?> -->
+
+
       </div>
     </div>
     <div class="c-cal__container c-calendar__style">
       <script>
-      
+        var monthsName = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
       // CAHNGE the below variable to the CURRENT YEAR
-      year = 2022;
+      // year = 2023;
 
-      // first day of the week of the new year
-      today = new Date("January 1, " + year);
-      start_day = today.getDay() + 1;
-      fill_table("January", 31, "01");
-      fill_table("February", 28, "02");
-      fill_table("March", 31, "03");
-      fill_table("April", 30, "04");
-      fill_table("May", 31, "05");
-      fill_table("June", 30, "06");
-      fill_table("July", 31, "07");
-      fill_table("August", 31, "08");
-      fill_table("September", 30, "09");
-      fill_table("October", 31, "10");
-      fill_table("November", 30, "11");
-      fill_table("December", 31, "12");
+      dateObj = new Date();
+      year = <?php echo $yearNow; ?>;
+      month = dateObj.getUTCMonth()+1;
+      month2Digit = ("0" + (month)).slice(-2);
+      day = dateObj.getUTCDate();
+      day2Digit = ("0" + (day)).slice(-2);
+        
+        skrgToday = year + "-" + monthsName[parseInt(month)-1] + "-" + day;
+        console.log('Today : '+skrgToday);
+
+        // first day of the week of the new year
+        // today = new Date("January 1, " + year);
+        //today = new Date(monthsName[parseInt(month)-1] + " "+day+", " + year);
+        today = new Date();
+      
+        // start_day = today.getDay() + 1;
+        start_day = today.getDay();
+        fill_table(monthsName[0], 31, "01");
+        fill_table(monthsName[1], 28, "02");
+        fill_table(monthsName[2], 31, "03");
+        fill_table(monthsName[3], 30, "04");
+        fill_table(monthsName[4], 31, "05");
+        fill_table(monthsName[5], 30, "06");
+        fill_table(monthsName[6], 31, "07");
+        fill_table(monthsName[7], 31, "08");
+        fill_table(monthsName[8], 30, "09");
+        fill_table(monthsName[9], 31, "10");
+        fill_table(monthsName[10], 30, "11");
+        fill_table(monthsName[11], 31, "12");
       </script>
       
     </div>
@@ -120,7 +148,7 @@ if(isset($_POST['submit'])){
     <a href="javascript:;" class="o-btn js-event__close">CLOSE <span class="fa fa-close"></span></a>
        <form id="addEvent" action="" method="POST" enctype="multipart/form-data"> 
       <input placeholder="Nama" type="text" name="name" id="name">
-      <input type="date" name="date" id="date">
+      <input type="date" name="date" id="date" value="<?php echo date('Y-m-d'); ?>" >
       <textarea placeholder="Notes" name="notes" cols="30" rows="10" id="notes"></textarea>
       <select name="tags" id="tags">
           <option value="Hadir">Hadir</option>
@@ -169,11 +197,10 @@ if(isset($_POST['submit'])){
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.cycle2/2.1.6/jquery.cycle2.core.min.js'></script>
-<script  src="./js/kalender.js"></script>
+<script src="./js/kalender.js"></script>
 
-<!-- <script src='./js/jquery-ui.min.js'></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
-<script  src="./js/note.js"></script>
+<script src="./js/note.js"></script>
 
 <script type = "text/javascript">
 
@@ -190,15 +217,6 @@ if(isset($_POST['submit'])){
     var accessAbout = document.getElementById("about").offsetHeight / 2;
     $("html, body").animate({ scrollTop: accessAbout });
   };
-
-  // document.addEventListener("DOMContentLoaded", function(event) { 
-  //           var scrollpos = localStorage.getItem('scrollpos');
-  //           if (scrollpos) window.scrollTo(0, scrollpos);
-  //       });
-
-  //       window.onbeforeunload = function(e) {
-  //           localStorage.setItem('scrollpos', window.scrollY);
-  //       };
 
 </script>
 

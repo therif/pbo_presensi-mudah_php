@@ -2,8 +2,15 @@
 var monthEl = $(".c-main");
 var dataCel = $(".c-cal__cel");
 var dateObj = new Date();
+// var month = dateObj.getUTCMonth() + 1;
+// var day = dateObj.getUTCDate();
+// var month = ("0" + (dateObj.getUTCMonth() + 0)).slice(-2);
+// var day = ("0" + (dateObj.getUTCDate())).slice(-2);
 var month = dateObj.getUTCMonth() + 1;
+var month2Digit = ("0" + (month)).slice(-2);
 var day = dateObj.getUTCDate();
+var day2Digit = ("0" + (day)).slice(-2);
+
 var year = dateObj.getUTCFullYear();
 var monthText = [
   "January",
@@ -26,7 +33,7 @@ var saveBtn = $(".js-event__save");
 var closeBtn = $(".js-event__close");
 var winCreator = $(".js-event__creator");
 var inputDate = $(this).data();
-today = year + "-" + month + "-" + day;
+today = year + "-" + month2Digit + "-" + day2Digit;
 
 
 // ------ set default events -------
@@ -35,10 +42,19 @@ function defaultEvents(dataDay,dataName,dataNotes,classTag){
   date.attr("data-name", dataName);
   date.attr("data-notes", dataNotes);
   date.addClass("event");
-  date.addClass("event--" + classTag);
+  date.addClass("event--" + classTag.toLowerCase());
+}
+function presensiEvents(dataDay,dataName,dataNotes,classTag){
+  var date = $('*[data-day='+dataDay+']');
+  date.attr("data-name", dataName);
+  date.attr("data-notes", classTag +'<br>'+dataNotes);
+  date.addClass("event");
+  date.addClass("event--" + classTag.toLowerCase());
 }
 
-defaultEvents(today, 'YEAH!','Today is your day','important');
+showAllPresensi();
+// defaultEvents(today, 'YEAH!','Today is your day','important');
+// defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','festivity');
 // defaultEvents('2022-12-25', 'MERRY CHRISTMAS','A lot of gift!!!!','festivity');
 // defaultEvents('2022-05-04', "LUCA'S BIRTHDAY",'Another gifts...?','birthday');
 // defaultEvents('2022-03-03', "MY LADY'S BIRTHDAY",'A lot of money to spent!!!!','birthday');
@@ -48,8 +64,12 @@ defaultEvents(today, 'YEAH!','Today is your day','important');
 
 //button of the current day
 todayBtn.on("click", function() {
+  console.log('todayBtn ('+today+') : '+month+' < '+indexMonth);
   if (month < indexMonth) {
-    var step = indexMonth % month;
+    // var step = indexMonth % month;
+    var step = indexMonth - month;
+    console.log('Dalem ('+step+') : '+indexMonth+' % '+month);
+    // movePrev(step, true);
     movePrev(step, true);
   } else if (month > indexMonth) {
     var step = month - indexMonth;
@@ -59,19 +79,23 @@ todayBtn.on("click", function() {
 
 //higlight the cel of current day
 dataCel.each(function() {
+  // console.log('is Today : '+$(this).data("day")+' = '+today);
   if ($(this).data("day") === today) {
     $(this).addClass("isToday");
-    fillEventSidebar($(this));
+    
+    //fillEventSidebar($(this));
   }
 });
 
 //window event creator
 addBtn.on("click", function() {
+  console.log('addBtn : '+today);
   winCreator.addClass("isVisible");
   $("body").addClass("overlay");
   dataCel.each(function() {
     if ($(this).hasClass("isSelected")) {
       today = $(this).data("day");
+      // console.log('addBtn2 : '+daytoday);
       document.querySelector('input[type="date"]').value = today;
     } else {
       document.querySelector('input[type="date"]').value = today;
@@ -102,7 +126,8 @@ saveBtn.on("click", function() {
       if (inputTag != null) {
         $(this).addClass("event--" + inputTag);
       }
-      fillEventSidebar($(this));
+      
+      //fillEventSidebar($(this));
     }
   });
 
@@ -111,12 +136,96 @@ saveBtn.on("click", function() {
   $("#addEvent")[0].reset();
 });
 
+function showTglIni(self) {
+  // defaultEvents(today, 'YEAH!','Today is your day','important');
+  // defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
+  var tglny = self.attr("data-day");
+  var dataString = 'tgl='+ tglny;
+  console.log(dataString);
+
+  $.ajax({
+    type: "POST",
+    url: "operation/fungsiPresensi.php?op=showpresensi",
+    data: dataString,
+    cache: false,
+    success: function(html) {
+        console.log(html);
+        // parsing the html to json
+        var json = $.parseJSON(html);
+        // loop the json to new card 
+        $.each(json, function(i, item) {
+          presensiEvents(item.tgl, item.nama,item.desk,item.info);
+            
+        });
+
+    }
+  });
+}
+
+function showAllPresensi() {
+
+  defaultEvents(today, 'YEAH!','Today is your day','important');
+  defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
+  defaultEvents("2023-01-24", 'Tomorrow!','22 May tomorrow be more beautiful!!!!','important');
+
+  $.ajax({
+    type: "GET",
+    url: "operation/fungsiPresensi.php?op=showpresensi",
+    cache: false,
+    success: function(html) {
+        // console.log(html);
+        // parsing the html to json
+        var json = $.parseJSON(html);
+        // loop the json to new card 
+        $.each(json, function(i, item) {
+          presensiEvents(item.tgl, item.nama,item.desk,item.info);
+            
+        });
+
+    }
+  });
+}
+
 //fill sidebar event info
 function fillEventSidebar(self) {
   $(".c-aside__event").remove();
+
+  var tglny = self.attr("data-day");
+  var dataString = 'tgl='+ tglny;
+  console.log(dataString);
+
+  $.ajax({
+    type: "POST",
+    url: "operation/fungsiPresensi.php?op=showpresensi",
+    data: dataString,
+    cache: false,
+    success: function(html) {
+        console.log(html);
+        // parsing the html to json
+        var json = $.parseJSON(html);
+        // loop the json to new card 
+        $.each(json, function(i, item) {
+
+          $(".c-aside__eventList").append(
+            "<p class='c-aside__event'>" +
+            item.nama + " <span> • " + item.info + "</span><br>" +
+            "<i>"+item.desk +"</i>"+
+            "</p>"
+          );
+            
+        });
+
+    }
+  });
+
+
+  // $(".c-aside__event").remove();
   var thisName = self.attr("data-name");
   var thisNotes = self.attr("data-notes");
   var thisImportant = self.hasClass("event--important");
+  var thisHadir = self.hasClass("event--hadir");
+  var thisSakit = self.hasClass("event--sakit");
+  var thisIzin = self.hasClass("event--izin");
   var thisBirthday = self.hasClass("event--birthday");
   var thisFestivity = self.hasClass("event--festivity");
   var thisEvent = self.hasClass("event");
@@ -131,6 +240,34 @@ function fillEventSidebar(self) {
         "</span></p>"
       );
       break;
+    case thisHadir:
+      $(".c-aside__eventList").append(
+        "<p class='c-aside__event c-aside__event--hadir'>" +
+        thisName +
+        " <span> • " +
+        thisNotes +
+        "</span></p>"
+      );
+      break;
+    case thisSakit:
+      $(".c-aside__eventList").append(
+        "<p class='c-aside__event c-aside__event--sakit'>" +
+        thisName +
+        " <span> • " +
+        thisNotes +
+        "</span></p>"
+      );
+      break;
+    case thisIzin:
+      $(".c-aside__eventList").append(
+        "<p class='c-aside__event c-aside__event--izin'>" +
+        thisName +
+        " <span> • " +
+        thisNotes +
+        "</span></p>"
+      );
+      break;
+
     case thisBirthday:
       $(".c-aside__eventList").append(
         "<p class='c-aside__event c-aside__event--birthday'>" +
@@ -160,6 +297,7 @@ function fillEventSidebar(self) {
       break;
    }
 };
+
 dataCel.on("click", function() {
   var thisEl = $(this);
   var thisDay = $(this)
@@ -169,6 +307,8 @@ dataCel.on("click", function() {
   .attr("data-day")
   .slice(5, 7);
 
+  console.log($(this).val());
+  
   fillEventSidebar($(this));
 
   $(".c-aside__num").text(thisDay);
@@ -196,6 +336,7 @@ function moveNext(fakeClick, indexNext) {
   }
 }
 function movePrev(fakeClick, indexPrev) {
+  console.log('Masuk MovePrev : '+fakeClick+' '+indexPrev);
   for (var i = 0; i < fakeClick; i++) {
     $(".c-main").css({
       left: "+=100%"

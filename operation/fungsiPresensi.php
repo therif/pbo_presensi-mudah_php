@@ -1,6 +1,30 @@
 <?php
 
-include 'db/koneksi.php';
+// include 'db/koneksi.php';
+include '../db/koneksi.php';
+
+if (isset($_REQUEST['op'])) {
+    $act = $_REQUEST['op'];
+    
+    switch($act){
+        case 'addpresensi':
+            addnote();
+            break;
+        case 'showpresensi':
+            showpresensi();
+            break;
+        // case 'delnote':
+        //     delnote();
+        //     break;
+        // case 'editnote':
+        //     editnote();
+        //     break;
+        default:
+            // echo 'Gagal';
+            // showpresensi();
+            break;
+    }
+}
 
 // class presensi_Model {
 //     private $name;
@@ -33,7 +57,7 @@ class presensi {
 
     function getAll_data($tgl = '') {
         if (!empty($tgl)) {
-            $sql = "SELECT * FROM presensi WHERE tgl = $tgl ORDER BY tgl DESC;";
+            $sql = "SELECT * FROM presensi WHERE tgl = '$tgl' ORDER BY tgl DESC;";
         } else {
             $sql = "SELECT * FROM presensi ORDER BY tgl DESC;";
         }
@@ -106,6 +130,23 @@ class presensi {
     function escape_string($value) {
 		return $this->db->real_escape_string($value);
 	}
+}
+
+
+function showPresensi() {
+    $tgl = '';
+    if (isset($_POST['tgl'])) {
+        $tgl = $_POST['tgl'];
+    }
+    $pr = new presensi();
+    $data;
+    if (!empty($tgl)) {
+        $data = $pr->getAll_data($tgl);
+    } else {
+        $data = $pr->getAll_data();
+    }
+    
+    echo json_encode($data);
 }
 
 // function closeDB($koneksi){
