@@ -19,15 +19,24 @@ UAS MEMBUAT WEBSITE :
 #### Penilaian Berdasarkan / Goals :  
 - Ide / Tema .  
 ```
-Tema Presensi Mudah. Adalah website dimana tempat menunjukkan kehadiran ataupun eksistensi dengan super mudah.
+Tema Presensi Mudah. 
+Adalah website dimana tempat menunjukkan kehadiran ataupun eksistensi dengan super mudah.
 ```
 - Fungsi Crud & OOP  
 ```
-Fungsi CRUD & OOP Untuk  CRUD,  pada  presensi  hanya  mode  Create  (Add)  dan  Read (Listing). Mode  lengkap  CRUP  ada  pada  notes,  yaitu  Create  (Add),  Read (Listing dari DB), Update (Edit Notes yang ada) dan Delete (Hapus pada tombol bulat merah).  Untuk  OOP,  berapa  pada  fungsi  database  operation,  pada  file “fungsiPresensi.php” dan “fungsiNote.php”
+Fungsi CRUD & OOP Untuk  CRUD,  pada  presensi  hanya  mode  Create  (Add)  dan  Read (Listing).  
+Mode  lengkap  CRUP  ada  pada  notes,  yaitu  Create  (Add),  Read (Listing dari DB),  
+Update (Edit Notes yang ada) dan Delete (Hapus pada tombol bulat merah).  
+Untuk  OOP,  berapa  pada  fungsi  database  operation,  pada  file “fungsiPresensi.php” dan “fungsiNote.php”
 ```
 - Design / Tampilan kesesuaian Dengan Ide/Tema.  
 ```
-kesesuaian dengan ide / tema Konsep adalah untuk menunjukkan kehadiran dengan klik Kalender, kemudian klik “Presensi Mudah +”, kemudian isi sesuai data. Selain  itu,  ada  juga  notes,  dimana  untuk  menunjukkan  eksistensi dengan mungkin mengisi notes ataupun statu dan mood anda. Dari  segi  tampilan,  menggunakan  full  responsive  template  dengan javascript, Ajax/JQuery,  dan  Html.  Dimana  setelah  action  beberapa sudah tidak memerlukan reload/refresh halaman.
+kesesuaian dengan ide / tema Konsep adalah untuk menunjukkan kehadiran dengan klik Kalender, 
+kemudian klik “Presensi Mudah +”, kemudian isi sesuai data. 
+Selain  itu,  ada  juga  notes,  dimana  untuk  menunjukkan  eksistensi dengan mungkin mengisi notes 
+ataupun status dan mood anda. 
+Dari  segi  tampilan,  menggunakan  full  responsive  template  dengan javascript, Ajax/JQuery,  dan  Html.  
+Dimana  setelah  action (Add, Edit/Update, Delete, Read)  sudah tidak memerlukan reload/refresh halaman.
 ```
 
 
