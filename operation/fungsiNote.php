@@ -126,7 +126,7 @@ function addnote() {
     if (!empty($title)) {
         $addDb = new noteProses();
         $prosins = $addDb->add_Note($title, $konten);
-        echo json_encode($prosins);      
+        echo json_encode($prosins, true);      
     } else {
 
     }
