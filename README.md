@@ -9,7 +9,10 @@ Website dibuat dengan Editor VSCode.
 Untuk Database menggunakan MySQL.  
 Selain itu PHP, JQuery/Ajax, Javascript, HTML, CSS.  
   
-
+### Cara Pemasangan / Instalasi
+- import master skema db di folder "db", filename "pbo_presensi.sql"
+- Setting Koneksi ke database sesuai user dan dbname di folder "db", filename "koneksi.php"
+- Selanjutnya lakukan prosedur kebutuhan biasa untuk menjalankan php website di folder www
 
 ### Requirement :  
 UAS MEMBUAT WEBSITE :  

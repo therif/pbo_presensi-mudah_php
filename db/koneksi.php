@@ -3,8 +3,8 @@
 function connect_database(){
     $servername = "localhost";
     $database = "pbo_presensi";
-    $username = "room";
-    $password = "therif";
+    $username = "root";
+    $password = "";
     $koneksi = mysqli_connect($servername, $username, $password, $database);
     // mengecek koneksi
     if (!$koneksi) {
