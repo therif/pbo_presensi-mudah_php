@@ -45,8 +45,12 @@ Dimana  setelah  action (Add, Edit/Update, Delete, Read)  sudah tidak memerlukan
 
 ### DEMO SHOW
 
-![Image 1](ss1.png?raw=true)
+![Image 1](res/ss1.png?raw=true)
 
-![Image 1](ss2.png?raw=true)
+![Image 2](res/ss2.png?raw=true)
 
-![Image 1](ss3.png?raw=true)
+![Image 3](res/ss3.png?raw=true)
+
+![Image About 1](res/ss4a.png?raw=true)
+
+![Image About 2](res/ss4b.png?raw=true)
