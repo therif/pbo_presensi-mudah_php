@@ -1,5 +1,8 @@
 # pbo_presensi-mudah_php  
 Tugas Mata Kuliah PBO, Semester 1 - UAS  
+Oleh -   
+  Nama  : ARIF KURNIAWAN  
+  Prodi : Teknologi Informasi  
 
 ## PRESENSI - MUDAH  
 Website dibuat dengan Editor VSCode.  
