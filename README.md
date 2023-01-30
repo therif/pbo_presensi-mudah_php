@@ -1,7 +1,15 @@
-# [https://github.com/therif/pbo_presensi-mudah_php](https://github.com/therif/pbo_presensi-mudah_php)
-Tugas Mata Kuliah PBO, Semester 1 - UAS  
+# Source Code
+### [https://github.com/therif/pbo_presensi-mudah_php](https://github.com/therif/pbo_presensi-mudah_php)
 
+
+# Live Demo
+### [https://therif.dotnesia.com/pbo/index.php](https://therif.dotnesia.com/pbo/index.php)
+  
+  
+   
 ## PRESENSI - MUDAH  
+Tugas Mata Kuliah PBO, Semester 1 - UAS   
+  
 Oleh -   
   Nama  : ARIF KURNIAWAN  
   Prodi : Teknologi Informasi  
