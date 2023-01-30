@@ -1,10 +1,11 @@
-# pbo_presensi-mudah_php  
+# [https://github.com/therif/pbo_presensi-mudah_php](https://github.com/therif/pbo_presensi-mudah_php)
 Tugas Mata Kuliah PBO, Semester 1 - UAS  
+
+## PRESENSI - MUDAH  
 Oleh -   
   Nama  : ARIF KURNIAWAN  
   Prodi : Teknologi Informasi  
-
-## PRESENSI - MUDAH  
+    
 Website dibuat dengan Editor VSCode.  
 Untuk Database menggunakan MySQL.  
 Selain itu PHP, JQuery/Ajax, Javascript, HTML, CSS.  
