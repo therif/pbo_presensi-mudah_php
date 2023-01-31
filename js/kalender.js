@@ -35,7 +35,6 @@ var winCreator = $(".js-event__creator");
 var inputDate = $(this).data();
 today = year + "-" + month2Digit + "-" + day2Digit;
 
-
 // ------ set default events -------
 function defaultEvents(dataDay,dataName,dataNotes,classTag){
   var date = $('*[data-day='+dataDay+']');
@@ -153,8 +152,21 @@ function showAllPresensi() {
     }
   });
 
+  var newdatebesok = new Date();
+  newdatebesok.setDate(newdatebesok.getDate() + 1);
+  console.log(newdatebesok);
+  var monthbesok = newdatebesok.getUTCMonth() + 1;
+  var month2DigitBesok = ("0" + (monthbesok)).slice(-2);
+  var daybesok = newdatebesok.getUTCDate();
+  var day2DigitBesok = ("0" + (daybesok)).slice(-2);
+
+  var besok = (newdatebesok.getFullYear()+'-'+month2DigitBesok+ '-' + day2DigitBesok);
+
+  //tomorrow = year + "-" + month2Digit + "-" + besok2Digit;
+  console.log('tomorrow : '+besok);
+  
   defaultEvents(today, 'YEAH!','Today is your day','important');
-  defaultEvents("2023-01-24", 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
+  defaultEvents(besok, 'Tomorrow!','May tomorrow be more beautiful!!!!','important');
 }
 
 //fill sidebar event info
